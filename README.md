@@ -1,24 +1,27 @@
-# nS feedReader
+# tsB podcastReader
 
-RSS / Atom feed を読み込みます。
+[tsB podcastReader](https://github.com/Chiffon-Pudding/VRC-PodcastReader/) は [m-hayabusa](https://nekomimi.studio/) 氏によって制作された[nS feedReader](https://github.com/m-hayabusa/VRC-FeedReader)のForkです。
 
-- 1. UnityPackage を https://vpm.nekomimi.studio/ からダウンロードしてインポート
-  2. [GameObject] -> [nekomimiStudio] -> [FeedReader] を追加
-  3. 追加した FeedReader の[Feed URL]を設定
-  4. 下のサンプルコードが全機能です ↓
-- 1. Download UnityPackage from https://vpm.nekomimi.studio/ and import
-  2. Add [GameObject] -> [nekomimiStudio] -> [FeedReader]
-  3. Set [Feed URL] in FeedReader that added to the scene
-  4. Uses like this↓
+Podcast feed を読み込みます。対応しているのは RSS2.0 の Podcast のみです。
+
+対応する要素は [Podcast Standards Project](https://github.com/Podcast-Standards-Project/PSP-1-Podcast-RSS-Specification) を参考にいくつかピックアップしたものですが、
+同名の要素が複数存在した場合は最初の1つのみが読み込まれるようになっている他、
+[Podcastindex.org](https://github.com/Podcastindex-org) で提供されている [example.xml](https://github.com/Podcastindex-org/podcast-namespace/blob/main/example.xml) を読み込むと UdonVM が halt することが確認されている等、対応は完全ではありません。
+
+Usage :
+
+- 1. PodcastReader のプレハブを追加
+  2. 追加した PodcastReader の Feed URL を設定
+  3. 下のサンプルコードを参考にしてください ↓
 
 ```csharp
 using UnityEngine;
 using UdonSharp;
-using nekomimiStudio.FeedReader;
+using tinysidheBower.PodcastReader;
 
 public class example : UdonSharpBehaviour
 {
-    [SerializeField] private FeedReaderCore feeds;
+    [SerializeField] private PodcastReaderCore feeds;
     private bool done = false;
 
     public override void Interact()
@@ -51,6 +54,7 @@ public class example : UdonSharpBehaviour
                         {
                             Debug.Log(feeds.getFeedEntryItem(i, j, FeedEntry.Title));
                             Debug.Log(feeds.getFeedEntryItem(i, j, FeedEntry.Summary));
+                            Debug.Log(feeds.getFeedEntryItem(i, j, FeedEntry.EnclosureUrl));
                         }
                     }
                 }
@@ -61,7 +65,7 @@ public class example : UdonSharpBehaviour
                 Debug.Log($"loading... {feeds.GetProgress()}");
             }
             /*
-                FeedHeader and FeedEntry are written in ./Runtime/Script/feedReader.cs (scroll to end of the file)
+                FeedHeader and FeedEntry are written in ./Runtime/Script/PodcastReaderCore.cs (scroll to end of the file)
             */
         }
     }
