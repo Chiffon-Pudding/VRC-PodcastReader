@@ -1,5 +1,6 @@
 {
-    "name": "studio.nekomimi.feedreader.Editor",
+    "name": "bower.tinysidhe.podcastreader.Editor",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [
         "Editor"
