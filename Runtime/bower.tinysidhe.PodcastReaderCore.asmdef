@@ -1,5 +1,5 @@
 {
-    "name": "PodcastReaderCore",
+    "name": "bower.tinysidhe.podcastreader",
     "rootNamespace": "",
     "references": [
         "VRC.SDK3",
