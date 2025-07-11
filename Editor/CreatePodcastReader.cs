@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 
-namespace nekomimiStudio.feedReader
+namespace chiffonpuddingLabo.PodcastReader
 {
-    public class CreateFeedReader
-    {
-        [MenuItem("GameObject/nekomimiStudio/FeedReader", false, 10)]
+    public class CreatePodcastReader
+    {/*
+        [MenuItem("GameObject/chiffonpuddingLabo/PodcastReader", false, 10)]
         public static void Create(MenuCommand menu)
         {
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/studio.nekomimi.feedreader/Runtime/FeedReader.prefab");
@@ -13,6 +13,6 @@ namespace nekomimiStudio.feedReader
             GameObjectUtility.SetParentAndAlign(res, (GameObject)menu.context);
             Undo.RegisterCreatedObjectUndo(res, "FeedReader");
             Selection.activeObject = res;
-        }
+        }*/
     }
 }
