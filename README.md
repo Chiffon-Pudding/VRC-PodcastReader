@@ -1,6 +1,6 @@
 # tsB podcastReader
 
-[tsB podcastReader](https://github.com/Chiffon-Pudding/VRC-PodcastReader/) は [m-hayabusa](https://nekomimi.studio/) 氏によって制作された[nS feedReader](https://github.com/m-hayabusa/VRC-FeedReader)のForkです。
+[tsB podcastReader](https://github.com/Chiffon-Pudding/VRC-PodcastReader/) は [m-hayabusa](https://nekomimi.studio/) 氏によって制作された [nS feedReader](https://github.com/m-hayabusa/VRC-FeedReader) のForkです。
 
 Podcast feed を読み込みます。対応しているのは RSS2.0 の Podcast のみです。
 
