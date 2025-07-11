@@ -4,7 +4,7 @@ using VRC.SDKBase;
 using VRC.SDK3.StringLoading;
 using VRC.SDK3.Data;
 
-namespace nekomimiStudio.PodcastReader
+namespace chiffonpuddingLabo.PodcastReader
 {
     public class PodcastReaderCore : XMLParser_Callback
     {
