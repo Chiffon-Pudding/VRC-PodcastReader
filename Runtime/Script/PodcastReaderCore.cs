@@ -199,10 +199,11 @@ namespace tinysidheBower.PodcastReader
 
         private void parseRSS2(int feedNum, DataDictionary contentRoot)
         {
+            // If multiple Elements with the same name exist, only the first one will be loaded.
             contentRoot = XMLParser.GetNodeByPath(contentRoot, "/channel");
 
             res[feedNum] = new string[2][][];
-            res[feedNum][0] = new string[18][];
+            res[feedNum][0] = new string[38][];
 
             res[feedNum][0][(int)FeedHeader.Title] = new string[] { GetNodeValueByName(contentRoot, "title") };
             res[feedNum][0][(int)FeedHeader.SubTitle] = new string[] { GetNodeValueByName(contentRoot, "subtitle") };
@@ -216,13 +217,36 @@ namespace tinysidheBower.PodcastReader
             res[feedNum][0][(int)FeedHeader.AuthorUri] = new string[] { "" };
 
             res[feedNum][0][(int)FeedHeader.Language] = new string[] { GetNodeValueByName(contentRoot, "language") };
-            res[feedNum][0][(int)FeedHeader.Category_itunes] = new string[] { GetAttributeValueByName(contentRoot, "itunes:category", "text") };  // first element only.
-            res[feedNum][0][(int)FeedHeader.SubCategory_itunes] = new string[] { GetAttributeValueByName( XMLParser.GetNodeByPath(contentRoot, "itunes:category"), "itunes:category", "text") };  // first element only.
+            res[feedNum][0][(int)FeedHeader.Category_itunes] = new string[] { GetAttributeValueByName(contentRoot, "itunes:category", "text") };
+            res[feedNum][0][(int)FeedHeader.SubCategory_itunes] = new string[] { GetAttributeValueByName( XMLParser.GetNodeByPath(contentRoot, "itunes:category"), "itunes:category", "text") };
             res[feedNum][0][(int)FeedHeader.Explicit_itunes] = new string[] { GetNodeValueByName(contentRoot, "itunes:explicit") };
             res[feedNum][0][(int)FeedHeader.Image_itunes] = new string[] { GetAttributeValueByName(contentRoot, "itunes:image", "href") };
             res[feedNum][0][(int)FeedHeader.Locked_podcast] = new string[] { GetNodeValueByName(contentRoot, "podcast:locked") };
+            res[feedNum][0][(int)FeedHeader.LockedOwner_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:locked", "owner") };
             res[feedNum][0][(int)FeedHeader.Author_itunes] = new string[] { GetNodeValueByName(contentRoot, "itunes:author") };
             res[feedNum][0][(int)FeedHeader.Copyright] = new string[] { GetNodeValueByName(contentRoot, "copyright") };
+            res[feedNum][0][(int)FeedHeader.Funding_podcast] = new string[] { GetNodeValueByName(contentRoot, "podcast:funding") };
+            res[feedNum][0][(int)FeedHeader.FundingUrl_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:funding", "url") };
+            res[feedNum][0][(int)FeedHeader.Complete_itunes] = new string[] { GetNodeValueByName(contentRoot, "itunes:complete") };
+
+            res[feedNum][0][(int)FeedHeader.LiveitemStatus_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:liveItem", "status") };
+            res[feedNum][0][(int)FeedHeader.LiveitemStart_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:liveItem", "start") };
+            res[feedNum][0][(int)FeedHeader.LiveitemEnd_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:liveItem", "end") };
+            res[feedNum][0][(int)FeedHeader.LI_Guid_podcast] = new string[] { GetNodeValueByName(XMLParser.GetNodeByPath(contentRoot, "podcast:liveItem"), "guid") };
+            res[feedNum][0][(int)FeedHeader.LI_Title_podcast] = new string[] { GetNodeValueByName(XMLParser.GetNodeByPath(contentRoot, "podcast:liveItem"), "title") };
+            res[feedNum][0][(int)FeedHeader.LI_Description_podcast] = new string[] { GetNodeValueByName(XMLParser.GetNodeByPath(contentRoot, "podcast:liveItem"), "description") };
+            res[feedNum][0][(int)FeedHeader.LI_EnclosureContentLink_podcast] = new string[] { GetNodeValueByName(XMLParser.GetNodeByPath(contentRoot, "podcast:liveItem"), "podcast:contentLink") };
+            res[feedNum][0][(int)FeedHeader.LI_EnclosureContentLinkUrl_podcast] = new string[] { GetAttributeValueByName( XMLParser.GetNodeByPath(contentRoot, "podcast:liveItem"), "podcast:contentLink", "href") };
+
+            res[feedNum][0][(int)FeedHeader.ChatServer_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:chat", "server") };
+            res[feedNum][0][(int)FeedHeader.ChatProtocol_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:chat", "protocol") };
+            res[feedNum][0][(int)FeedHeader.ChatAccountId_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:chat", "accountId") };
+            res[feedNum][0][(int)FeedHeader.Chatspace_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:chat", "space") };
+
+            res[feedNum][0][(int)FeedHeader.SocialInteractProtocol_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:socialInteract", "protocol") };
+            res[feedNum][0][(int)FeedHeader.SocialInteractUrl_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:socialInteract", "uri") };
+            res[feedNum][0][(int)FeedHeader.SocialInteractAccountId_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:socialInteract", "accountId") };
+            res[feedNum][0][(int)FeedHeader.SocialInteractAccountUrl_podcast] = new string[] { GetAttributeValueByName(contentRoot, "podcast:socialInteract", "accountUrl") };
 
             var items = XMLParser.GetChildNodes(contentRoot);
             string[][] entries = new string[items.Count][];
@@ -233,7 +257,7 @@ namespace tinysidheBower.PodcastReader
                 var entry = (DataDictionary)items[i];
                 if (XMLParser.GetNodeName(entry) == "item")
                 {
-                    entries[cnt] = new string[13];
+                    entries[cnt] = new string[17];
                     entries[cnt][(int)FeedEntry.Title] = GetNodeValueByName(entry, "title");
                     entries[cnt][(int)FeedEntry.SubTitle] = GetNodeValueByName(entry, "subtitle");
                     entries[cnt][(int)FeedEntry.Link] = GetNodeValueByName(entry, "link");
@@ -247,6 +271,10 @@ namespace tinysidheBower.PodcastReader
                     entries[cnt][(int)FeedEntry.Duration_itunes] = GetNodeValueByName(entry, "itunes:duration");
                     entries[cnt][(int)FeedEntry.Image_itunes] = GetAttributeValueByName(entry, "itunes:image", "href");
                     entries[cnt][(int)FeedEntry.Explicit_itunes] = GetNodeValueByName(entry, "itunes:explicit");
+                    entries[cnt][(int)FeedEntry. TranscriptUrl_podcast] = GetAttributeValueByName(entry, "podcast:transcript", "url");
+                    entries[cnt][(int)FeedEntry. TranscriptType_podcast] = GetAttributeValueByName(entry, "podcast:transcript", "type");
+                    entries[cnt][(int)FeedEntry. TranscriptLanguage_podcast] = GetAttributeValueByName(entry, "podcast:transcript", "language");
+                    entries[cnt][(int)FeedEntry. TranscriptRel_podcast] = GetAttributeValueByName(entry, "podcast:transcript", "rel");
                     entries[cnt][(int)FeedEntry.Block_itunes] = GetNodeValueByName(entry, "itunes:block");
 
                     cnt++;
@@ -371,11 +399,13 @@ namespace tinysidheBower.PodcastReader
     public enum FeedHeader
     {
         Title, SubTitle, Summary, Id, Link, Updated, Rights, Entries, AuthorName, AuthorUri
-        , Language, Category_itunes, SubCategory_itunes, Explicit_itunes, Image_itunes, Locked_podcast, Author_itunes, Copyright,
+        , Language, Category_itunes, SubCategory_itunes, Explicit_itunes, Image_itunes, Locked_podcast, LockedOwner_podcast, Author_itunes, Copyright, Funding_podcast, FundingUrl_podcast, Complete_itunes
+        , LiveitemStatus_podcast, LiveitemStart_podcast, LiveitemEnd_podcast, LI_Title_podcast,  LI_Guid_podcast, LI_Description_podcast, LI_EnclosureContentLink_podcast, LI_EnclosureContentLinkUrl_podcast
+        , ChatServer_podcast, ChatProtocol_podcast, ChatAccountId_podcast, Chatspace_podcast, SocialInteractProtocol_podcast, SocialInteractUrl_podcast, SocialInteractAccountId_podcast, SocialInteractAccountUrl_podcast
     }
     public enum FeedEntry
     {
         Title, SubTitle, Summary, Id, Link, Updated
-        , EnclosureLength, EnclosureType, EnclosureUrl, Duration_itunes, Image_itunes, Explicit_itunes,  Block_itunes
+        , EnclosureLength, EnclosureType, EnclosureUrl, Duration_itunes, Image_itunes, Explicit_itunes, TranscriptUrl_podcast, TranscriptType_podcast, TranscriptLanguage_podcast, TranscriptRel_podcast, Block_itunes
     }
 }
