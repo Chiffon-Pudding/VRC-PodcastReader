@@ -4,9 +4,9 @@ using VRC.SDKBase;
 using VRC.SDK3.StringLoading;
 using VRC.SDK3.Data;
 
-namespace nekomimiStudio.FeedReader
+namespace nekomimiStudio.PodcastReader
 {
-    public class FeedReaderCore : XMLParser_Callback
+    public class PodcastReaderCore : XMLParser_Callback
     {
         private XMLParser parser;
         [SerializeField] bool loadOnStart = false;
@@ -150,6 +150,12 @@ namespace nekomimiStudio.FeedReader
         {
             return XMLParser.GetText(XMLParser.GetNodeByPath(data, "/" + nodeName));
         }
+
+        private string GetAttributeValueByName(DataDictionary data, string nodeName, string attribute)
+        {
+            return  XMLParser.GetAttributes(XMLParser.GetNodeByPath( data, "/" + nodeName ))[attribute].ToString();
+        }
+
         private void parseRSS1(int feedNum, DataDictionary contentRoot)
         {
             var headerRoot = XMLParser.GetNodeByPath(contentRoot, "/channel");
@@ -196,7 +202,7 @@ namespace nekomimiStudio.FeedReader
             contentRoot = XMLParser.GetNodeByPath(contentRoot, "/channel");
 
             res[feedNum] = new string[2][][];
-            res[feedNum][0] = new string[10][];
+            res[feedNum][0] = new string[18][];
 
             res[feedNum][0][(int)FeedHeader.Title] = new string[] { GetNodeValueByName(contentRoot, "title") };
             res[feedNum][0][(int)FeedHeader.SubTitle] = new string[] { GetNodeValueByName(contentRoot, "subtitle") };
@@ -209,6 +215,15 @@ namespace nekomimiStudio.FeedReader
             res[feedNum][0][(int)FeedHeader.AuthorName] = new string[] { "" };
             res[feedNum][0][(int)FeedHeader.AuthorUri] = new string[] { "" };
 
+            res[feedNum][0][(int)FeedHeader.Language] = new string[] { GetNodeValueByName(contentRoot, "language") };
+            res[feedNum][0][(int)FeedHeader.Category_itunes] = new string[] { GetAttributeValueByName(contentRoot, "itunes:category", "text") };  // first element only.
+            res[feedNum][0][(int)FeedHeader.SubCategory_itunes] = new string[] { GetAttributeValueByName( XMLParser.GetNodeByPath(contentRoot, "itunes:category"), "itunes:category", "text") };  // first element only.
+            res[feedNum][0][(int)FeedHeader.Explicit_itunes] = new string[] { GetNodeValueByName(contentRoot, "itunes:explicit") };
+            res[feedNum][0][(int)FeedHeader.Image_itunes] = new string[] { GetAttributeValueByName(contentRoot, "itunes:image", "href") };
+            res[feedNum][0][(int)FeedHeader.Locked_podcast] = new string[] { GetNodeValueByName(contentRoot, "podcast:locked") };
+            res[feedNum][0][(int)FeedHeader.Author_itunes] = new string[] { GetNodeValueByName(contentRoot, "itunes:author") };
+            res[feedNum][0][(int)FeedHeader.Copyright] = new string[] { GetNodeValueByName(contentRoot, "copyright") };
+
             var items = XMLParser.GetChildNodes(contentRoot);
             string[][] entries = new string[items.Count][];
 
@@ -218,13 +233,22 @@ namespace nekomimiStudio.FeedReader
                 var entry = (DataDictionary)items[i];
                 if (XMLParser.GetNodeName(entry) == "item")
                 {
-                    entries[cnt] = new string[6];
+                    entries[cnt] = new string[13];
                     entries[cnt][(int)FeedEntry.Title] = GetNodeValueByName(entry, "title");
                     entries[cnt][(int)FeedEntry.SubTitle] = GetNodeValueByName(entry, "subtitle");
                     entries[cnt][(int)FeedEntry.Link] = GetNodeValueByName(entry, "link");
                     entries[cnt][(int)FeedEntry.Summary] = GetNodeValueByName(entry, "description");
                     entries[cnt][(int)FeedEntry.Id] = GetNodeValueByName(entry, "guid");
                     entries[cnt][(int)FeedEntry.Updated] = GetNodeValueByName(entry, "pubDate");
+
+                    entries[cnt][(int)FeedEntry.EnclosureLength] = GetAttributeValueByName(entry, "enclosure", "length");
+                    entries[cnt][(int)FeedEntry.EnclosureType] = GetAttributeValueByName(entry, "enclosure", "type");
+                    entries[cnt][(int)FeedEntry.EnclosureUrl] = GetAttributeValueByName(entry, "enclosure", "url");
+                    entries[cnt][(int)FeedEntry.Duration_itunes] = GetNodeValueByName(entry, "itunes:duration");
+                    entries[cnt][(int)FeedEntry.Image_itunes] = GetAttributeValueByName(entry, "itunes:image", "href");
+                    entries[cnt][(int)FeedEntry.Explicit_itunes] = GetNodeValueByName(entry, "itunes:explicit");
+                    entries[cnt][(int)FeedEntry.Block_itunes] = GetNodeValueByName(entry, "itunes:block");
+
                     cnt++;
                 }
             }
@@ -347,9 +371,11 @@ namespace nekomimiStudio.FeedReader
     public enum FeedHeader
     {
         Title, SubTitle, Summary, Id, Link, Updated, Rights, Entries, AuthorName, AuthorUri
+        , Language, Category_itunes, SubCategory_itunes, Explicit_itunes, Image_itunes, Locked_podcast, Author_itunes, Copyright,
     }
     public enum FeedEntry
     {
         Title, SubTitle, Summary, Id, Link, Updated
+        , EnclosureLength, EnclosureType, EnclosureUrl, Duration_itunes, Image_itunes, Explicit_itunes,  Block_itunes
     }
 }
