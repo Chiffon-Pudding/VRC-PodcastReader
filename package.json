@@ -1,11 +1,11 @@
 {
-  "name": "studio.nekomimi.feedreader",
-  "displayName": "nS feedReader",
-  "version": "0.2.6",
-  "description": "parse RSS / Atom Feed",
+  "name": "bower.tinysidhe.podcastreader",
+  "displayName": "tsB podcastReader",
+  "version": "0.0.1",
+  "description": "parse Podcast Feed. forked from m-hayabusa/VRC-FeedReader",
   "repository": {
     "type": "git",
-    "url": "https://github.com/m-hayabusa/VRC-FeedReader.git"
+    "url": "https://github.com/Chiffon-Pudding/VRC-PodcastReader"
   },
   "gitDependencies": {},
   "vpmDependencies": {
@@ -16,8 +16,8 @@
   "legacyFolders": {},
   "legacyFiles": {},
   "author": {
-    "name": "mewl hayabusa",
-    "email": "mewl@mewl.me",
-    "url": "https://nekomimi.studio"
+    "name": "ChiffonPudding",
+    "email": "chiffon_pudding@yahoo.co.jp",
+    "url": "https://misskey.furry-r-moonrabbitbower.com/@chiffon"
   }
 }
