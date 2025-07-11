@@ -1,5 +1,6 @@
 {
-    "name": "studio.nekomimi.feedreader",
+    "name": "PodcastReaderCore",
+    "rootNamespace": "",
     "references": [
         "VRC.SDK3",
         "VRC.SDKBase",
