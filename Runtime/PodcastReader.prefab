@@ -108,7 +108,7 @@ Transform:
   m_GameObject: {fileID: 9180706273249981425}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.352, y: 0.7493298, z: 1.7407312}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -137,9 +137,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1077538894577547698}
-  loadOnStart: 1
-  FeedURL:
-  - url: https://www.nhk.or.jp/s-media/news/podcast/list/v1/all.xml
+  loadOnStart: 0
+  FeedURL: []
 --- !u!114 &1077538894577547698
 MonoBehaviour:
   m_ObjectHideFlags: 0
