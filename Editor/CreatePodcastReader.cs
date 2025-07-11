@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace chiffonpuddingLabo.PodcastReader
+namespace tinysidheBower.PodcastReader
 {
     public class CreatePodcastReader
     {/*
